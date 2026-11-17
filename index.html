@@ -26,8 +26,7 @@
   <label>លេខតុ / Table No.<input id="tableNo" placeholder="ឧ. 05"></label>
   <div id="cartItems"></div><label>កំណត់សម្គាល់ (មិនបាច់ក៏បាន)<textarea id="note" placeholder="ឧ. មិនដាក់ស្លឹកខ្ទឹម"></textarea></label>
   <div class="total">សរុប៖ <strong id="total">0៛</strong></div>
-  <button id="sendOrder" class="primary wide">បញ្ជូនការកម្មង់</button>
-  <p id="orderMessage" class="muted"></p>
+  <button id="sendOrder" class="primary wide">បញ្ជូនការកម្មង់</button><p id="orderMessage" class="muted"></p>
 </div>
 <div id="adminPanel" class="panel hidden">
   <div class="panel-head"><h2>ផ្ទាំងគ្រប់គ្រង Admin</h2><button class="x" data-close="adminPanel">×</button></div>
@@ -51,7 +50,14 @@
   <label>ឈ្មោះម្ហូប<input id="pName"></label>
   <label>តម្លៃ (រៀល)<input id="pPrice" type="number" min="0"></label>
   <label>ប្រភេទ<input id="pCategory" placeholder="មីហឹរ / ម្ហូប / ភេសជ្ជៈ"></label>
-  <label>តំណរូបភាព (Image URL)<input id="pImage" placeholder="https://..."></label>
+  <label>រូបភាពម្ហូប (ជ្រើសពីទូរស័ព្ទ ឬកុំព្យូទ័រ)
+    <input id="pImageFile" type="file" accept="image/*">
+  </label>
+  <div id="pImagePreviewWrap" class="hidden" style="margin:10px 0">
+    <img id="pImagePreview" alt="រូបភាពម្ហូបមើលជាមុន" style="width:100%;max-height:220px;object-fit:contain;border:1px solid #ddd;border-radius:10px">
+    <button id="removeImageBtn" type="button" class="outline wide" style="margin-top:8px">ដករូបភាពចេញ</button>
+  </div>
+  <p class="muted">រូបភាពនឹងត្រូវបង្រួមទំហំដោយស្វ័យប្រវត្តិ មុនរក្សាទុក។</p>
   <label>ការពិពណ៌នា<textarea id="pDesc"></textarea></label>
   <label class="check"><input id="pAvailable" type="checkbox" checked> មានលក់</label>
   <input id="pId" type="hidden"><button id="saveProduct" class="primary wide">រក្សាទុក</button>
