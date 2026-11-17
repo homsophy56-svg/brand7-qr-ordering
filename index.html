@@ -1,67 +1,15 @@
 <!doctype html>
 <html lang="km">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#d90016">
-  <title>មីហឹរ ប្រេន៧លំដាប់ | កម្មង់ម្ហូប</title>
-  <link rel="stylesheet" href="./style.css">
-  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
-</head>
-<body>
-<header class="top">
-  <img id="brandLogo" src="./logo.jpg" alt="Logo ហាង" onerror="this.style.display='none'">
-  <div><h1>មីហឹរ ប្រេន៧លំដាប់</h1><p>ជ្រើសរើសរសជាតិហឹរដែលអ្នកចូលចិត្ត 🌶️</p></div>
-  <button id="adminOpen" class="outline">Admin</button>
-</header>
-<main>
-  <section class="intro"><div><span class="tag">QR ORDERING</span><h2>ម៉ឺនុយរបស់យើង</h2><p>ស្កេន QR • ជ្រើសរើសម្ហូប • បញ្ជូនការកម្មង់</p></div></section>
-  <div class="toolbar"><input id="search" placeholder="ស្វែងរកមុខម្ហូប..."><select id="category"><option value="">គ្រប់ប្រភេទ</option></select></div>
-  <section id="menu" class="menu"><p class="muted">កំពុងទាញយកម៉ឺនុយ...</p></section>
-</main>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#b90018">
+<title>មីហឹរ ប្រេន៧លំដាប់ | កម្មង់ម្ហូប</title><link rel="manifest" href="./manifest.webmanifest"><link rel="stylesheet" href="./style.css">
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+</head><body>
+<header class="top"><img src="./logo.jpg" alt="Brand 7" onerror="this.hidden=true"><div><h1>មីហឹរ ប្រេន៧លំដាប់</h1><p>ជ្រើសរើសរសជាតិហឹរដែលអ្នកចូលចិត្ត 🌶️</p></div><button id="adminOpen" class="outline">Admin</button></header>
+<main><section class="intro"><span class="tag">QR ORDERING</span><h2>ម៉ឺនុយរបស់យើង</h2><p>ស្កេន QR • ជ្រើសរើសម្ហូប • បញ្ជូនការកម្មង់</p></section>
+<div class="toolbar"><input id="search" placeholder="ស្វែងរកមុខម្ហូប..."><select id="category"><option value="">គ្រប់ប្រភេទ</option></select></div><div id="appNotice" class="notice hidden"></div><section id="menu" class="menu"><p>កំពុងទាញយកម៉ឺនុយ...</p></section></main>
 <button id="cartFab" class="cart-fab">កន្ត្រក <span id="cartCount">0</span></button>
-<div id="cartPanel" class="panel hidden">
-  <div class="panel-head"><h2>ការកម្មង់របស់អ្នក</h2><button class="x" data-close="cartPanel">×</button></div>
-  <label>លេខតុ / Table No.<input id="tableNo" placeholder="ឧ. 05"></label>
-  <div id="cartItems"></div><label>កំណត់សម្គាល់ (មិនបាច់ក៏បាន)<textarea id="note" placeholder="ឧ. មិនដាក់ស្លឹកខ្ទឹម"></textarea></label>
-  <div class="total">សរុប៖ <strong id="total">0៛</strong></div>
-  <button id="sendOrder" class="primary wide">បញ្ជូនការកម្មង់</button><p id="orderMessage" class="muted"></p>
-</div>
-<div id="adminPanel" class="panel hidden">
-  <div class="panel-head"><h2>ផ្ទាំងគ្រប់គ្រង Admin</h2><button class="x" data-close="adminPanel">×</button></div>
-  <div id="loginBox">
-    <label>Email Admin<input id="adminEmail" type="email" placeholder="admin@example.com"></label>
-    <label>Password<input id="adminPassword" type="password"></label>
-    <button id="loginBtn" class="primary wide">ចូលប្រព័ន្ធ</button>
-    <p class="muted">Admin account ត្រូវបង្កើតក្នុង Firebase Authentication ជាមុន។</p>
-  </div>
-  <div id="adminTools" class="hidden">
-    <div class="admin-actions"><button id="logoutBtn" class="outline">ចាកចេញ</button><button id="newProduct" class="primary">+ បន្ថែមម្ហូប</button></div>
-    <h3>បញ្ជីការកម្មង់</h3><div id="orders"></div>
-    <h3>គ្រប់គ្រងម៉ឺនុយ</h3><div id="productsAdmin"></div>
-    <h3>QR Code ហាង</h3><p class="muted">បង្កើត QR ដោយដាក់ URL Website ដែលបាន Deploy រួច។</p>
-    <input id="siteUrl" placeholder="https://your-site.web.app">
-    <button id="makeQr" class="outline wide">បង្ហាញ QR Code</button><div id="qrResult"></div>
-  </div>
-</div>
-<div id="productDialog" class="panel hidden">
-  <div class="panel-head"><h2 id="formTitle">បន្ថែមមុខម្ហូប</h2><button class="x" data-close="productDialog">×</button></div>
-  <label>ឈ្មោះម្ហូប<input id="pName"></label>
-  <label>តម្លៃ (រៀល)<input id="pPrice" type="number" min="0"></label>
-  <label>ប្រភេទ<input id="pCategory" placeholder="មីហឹរ / ម្ហូប / ភេសជ្ជៈ"></label>
-  <label>រូបភាពម្ហូប (ជ្រើសពីទូរស័ព្ទ ឬកុំព្យូទ័រ)
-    <input id="pImageFile" type="file" accept="image/*">
-  </label>
-  <div id="pImagePreviewWrap" class="hidden" style="margin:10px 0">
-    <img id="pImagePreview" alt="រូបភាពម្ហូបមើលជាមុន" style="width:100%;max-height:220px;object-fit:contain;border:1px solid #ddd;border-radius:10px">
-    <button id="removeImageBtn" type="button" class="outline wide" style="margin-top:8px">ដករូបភាពចេញ</button>
-  </div>
-  <p class="muted">រូបភាពនឹងត្រូវបង្រួមទំហំដោយស្វ័យប្រវត្តិ មុនរក្សាទុក។</p>
-  <label>ការពិពណ៌នា<textarea id="pDesc"></textarea></label>
-  <label class="check"><input id="pAvailable" type="checkbox" checked> មានលក់</label>
-  <input id="pId" type="hidden"><button id="saveProduct" class="primary wide">រក្សាទុក</button>
-</div>
-<div id="shade" class="shade hidden"></div>
-<script src="./app.js"></script>
-</body></html>
+<div id="cartPanel" class="panel hidden"><div class="panel-head"><h2>ការកម្មង់របស់អ្នក</h2><button class="x" data-close>×</button></div><label>លេខតុ<input id="tableNo" placeholder="ឧ. 05"></label><div id="cartItems"></div><label>កំណត់សម្គាល់<textarea id="note" placeholder="ឧ. មិនដាក់ស្លឹកខ្ទឹម"></textarea></label><div class="total">សរុប៖ <strong id="total">0៛</strong></div><button id="sendOrder" class="primary wide">បញ្ជូនការកម្មង់</button><p id="orderMessage" class="muted"></p></div>
+<div id="adminPanel" class="panel hidden"><div class="panel-head"><h2>ផ្ទាំងគ្រប់គ្រង Admin</h2><button class="x" data-close>×</button></div><div id="loginBox"><label>Email Admin<input id="adminEmail" type="email" autocomplete="username"></label><label>Password<input id="adminPassword" type="password" autocomplete="current-password"></label><button id="loginBtn" class="primary wide">ចូលប្រព័ន្ធ</button><p class="muted">ត្រូវប្រើគណនីដែលបានកំណត់សិទ្ធិ Admin ក្នុង Firebase។</p></div><div id="adminTools" class="hidden"><div class="admin-actions"><button id="logoutBtn" class="outline">ចាកចេញ</button><button id="newProduct" class="primary">+ បន្ថែមម្ហូប</button></div><h3>បញ្ជីការកម្មង់</h3><div id="orders"></div><h3>គ្រប់គ្រងម៉ឺនុយ</h3><div id="productsAdmin"></div><h3>QR Code សម្រាប់តុ</h3><input id="siteUrl" placeholder="Website URL"><button id="makeQr" class="outline wide">បង្កើត QR</button><div id="qrResult"></div><p id="adminError" class="error"></p></div></div>
+<div id="productDialog" class="panel hidden"><div class="panel-head"><h2 id="formTitle">បន្ថែមមុខម្ហូប</h2><button class="x" data-close>×</button></div><label>ឈ្មោះម្ហូប<input id="pName"></label><label>តម្លៃ (រៀល)<input id="pPrice" type="number" min="1"></label><label>ប្រភេទ<input id="pCategory" placeholder="មីហឹរ / ម្ហូប / ភេសជ្ជៈ"></label><label>រូបភាពម្ហូប (ពីទូរស័ព្ទ ឬកុំព្យូទ័រ)<input id="pImageFile" type="file" accept="image/*"></label><img id="imagePreview" class="preview hidden" alt="រូបភាពមើលជាមុន"><button id="removeImage" class="outline hidden" type="button">ដករូបភាពចេញ</button><label>ការពិពណ៌នា<textarea id="pDesc"></textarea></label><label class="check"><input id="pAvailable" type="checkbox" checked> មានលក់</label><input id="pId" type="hidden"><button id="saveProduct" class="primary wide">រក្សាទុក</button><p id="productError" class="error"></p></div>
+<div id="shade" class="shade hidden"></div><script src="./app.js"></script></body></html>
